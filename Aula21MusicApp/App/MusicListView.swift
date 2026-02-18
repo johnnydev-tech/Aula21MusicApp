@@ -28,8 +28,18 @@ struct MusicListView: View {
                     ProgressView("Buscando sucessos...")
                     
                 case .success(let tracks):
-                    List(tracks) { track in
-                        TrackRowView(track: track)
+                    VStack(alignment: .leading, spacing: 0) {
+                        if !viewModel.searchTerm.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            Text("Resultados para: \"\(viewModel.searchTerm)\"")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding([.top, .horizontal])
+                        }
+                        List(tracks) { track in
+                            TrackRowView(track: track)
+                        }
+                        .listStyle(.plain)
                     }
                     
                 case .error(let message):
